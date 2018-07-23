@@ -11,6 +11,7 @@ import {
   Text,
   View
 } from 'react-native';
+import _cloneDeep from 'lodash/fp/cloneDeep';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -19,19 +20,29 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+const lastNResponseObjects = [];
+const n = 20;
+
 type Props = {};
 export default class App extends Component<Props> {
   componentDidMount() {
-    setInterval(() => {
-      fetch('https://facebook.github.io/react-native/movies.json')
-        .then((response) => response.json())
-        // .then((responseJson) => {
-        //   console.log(responseJson.movies);
-        // })
-        // .catch((error) => {
-        //   console.error(error);
-        // });
-    }, 1000)
+    setInterval(this.logResponse, 1000);
+  }
+
+  logResponse = async () => {
+    try {
+      const response = await fetch("https://ashoat.com/rnleak.json");
+      let responseJson = await response.json();
+      //responseJson = _cloneDeep(responseJson); <-- uncommenting this line prevents the leak
+      lastNResponseObjects.push(responseJson);
+      if (lastNResponseObjects.length > n) {
+        lastNResponseObjects.pop();
+      } else {
+        console.log(`up to ${lastNResponseObjects.length} objects...`);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   render() {
