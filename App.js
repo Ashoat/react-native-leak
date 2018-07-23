@@ -34,7 +34,7 @@ export default class App extends Component<Props> {
       const response = await fetch("https://ashoat.com/rnleak.json");
       let responseJson = await response.json();
       //responseJson = _cloneDeep(responseJson); <-- uncommenting this line prevents the leak
-      lastNResponseObjects.push(responseJson);
+      lastNResponseObjects.unshift(responseJson);
       if (lastNResponseObjects.length > n) {
         lastNResponseObjects.pop();
       } else {
