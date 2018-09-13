@@ -9,9 +9,6 @@
   "dependencies": {
     "lodash": "^4.17.10",
     "react": "16.4.1",
-    "react-native": "^0.56.0"
-  },
-  "devDependencies": {
-    "babel-preset-react-native": "~5"
+    "react-native": "^0.57.0"
   }
 }
